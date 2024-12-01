@@ -2,6 +2,7 @@ import { assertEquals } from "@std/assert";
 import { ColumnParser } from "./columnparser.ts";
 import { ColumnsPairer } from "./columnspairer.ts";
 import { PairDistanceSummizer } from "./pairdistancesummizer.ts";
+import { ColumnSimilarityScoreCounter } from "./columnsimilarityscorecounter.ts";
 
 Deno.test("first pair is correct", () => {
   const input = `
@@ -127,3 +128,18 @@ Deno.test("total distance is correct", () => {
     assertEquals(totalSum, 11);
   });
   
+  
+Deno.test("similarity score is 31", () => {
+    const input = `
+      3   4
+      4   3
+      2   5
+      1   3
+      3   9
+      3   3   
+      `;
+  
+    const parser = new ColumnParser(input);
+    const columnSimilarityScoreCounter = new ColumnSimilarityScoreCounter(parser.getColumns());
+    assertEquals(columnSimilarityScoreCounter.getSimilarityScore(), 31);
+  });
