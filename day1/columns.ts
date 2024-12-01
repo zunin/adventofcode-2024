@@ -1,0 +1,1 @@
+export type Columns = {rights: Array<number>, lefts: Array<number>};
