@@ -1,8 +1,8 @@
 import {Level} from "./level.ts";
 
 export default class Report {
-    private levelsAreSorted(): boolean {
-        return this.levels.reduce((previous, current, index, array) => {
+    private levelsAreSorted(levels: Array<Level>): boolean {
+        return levels.reduce((previous, current, index, array) => {
             const left = array[index - 1];
             if (left >= current) {
                 return false;
@@ -12,8 +12,8 @@ export default class Report {
         }, true);
     }
 
-    private levelsAreReverseSorted(): boolean {
-        return this.levels.reduce((previous, current, index, array) => {
+    private levelsAreReverseSorted(levels: Array<Level>): boolean {
+        return levels.reduce((previous, current, index, array) => {
             const left = array[index - 1];
             if (left <= current) {
                 return false;
@@ -23,12 +23,12 @@ export default class Report {
         }, true);
     }
 
-    private levelsAreAllIncreasingOrDecreasing(): boolean {
-        return this.levelsAreSorted() || this.levelsAreReverseSorted() 
+    private levelsAreAllIncreasingOrDecreasing(levels: Array<Level>): boolean {
+        return this.levelsAreSorted(levels) || this.levelsAreReverseSorted(levels) 
     }
 
-    private adjacentLevelsDifferByAtleastOneAndAtMostThree(): boolean {
-        return this.levels.reduce((previous, current, index, array) => {
+    private adjacentLevelsDifferByAtleastOneAndAtMostThree(levels: Array<Level>): boolean {
+        return levels.reduce((previous, current, index, array) => {
             const left = array[index - 1];
             const right = array[index + 1];
 
@@ -50,9 +50,23 @@ export default class Report {
     }
 
     safe(): boolean {
-        return this.levelsAreAllIncreasingOrDecreasing() 
-            && this.adjacentLevelsDifferByAtleastOneAndAtMostThree();
+        return this.levelsAreAllIncreasingOrDecreasing(this.levels) 
+            && this.adjacentLevelsDifferByAtleastOneAndAtMostThree(this.levels);
     }
+
+    problemDampeneredSafe(): boolean {
+        if (this.safe()) {
+            return true;
+        }
+        for(let ignoredIndex = 0; ignoredIndex < this.length; ignoredIndex++) {
+            const levels = this.levels.slice(0, ignoredIndex).concat(this.levels.slice(ignoredIndex + 1, this.length));
+            if(this.levelsAreAllIncreasingOrDecreasing(levels) && this.adjacentLevelsDifferByAtleastOneAndAtMostThree(levels)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     constructor(private levels: Array<Level>) {}
 
     get length(): number  {

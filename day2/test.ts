@@ -81,3 +81,58 @@ Deno.test("if reports are the same is not safe", () => {
     false,
   );
 });
+
+
+Deno.test("first report is problem damperned safe", () => {
+    const reportParser = new ReportParser("7 6 4 2 1");
+    const [report] = reportParser.getReports();
+    assertEquals(
+      report.problemDampeneredSafe(),
+      true
+    );
+  });
+
+  Deno.test("second report is problem damperned safe", () => {
+    const reportParser = new ReportParser("1 2 7 8 9");
+    const [report] = reportParser.getReports();
+    assertEquals(
+      report.problemDampeneredSafe(),
+      false
+    );
+  });
+
+  Deno.test("third report is problem damperned safe", () => {
+    const reportParser = new ReportParser("9 7 6 2 1");
+    const [report] = reportParser.getReports();
+    assertEquals(
+      report.problemDampeneredSafe(),
+      false
+    );
+  });
+
+  Deno.test("fourth report is problem damperned safe", () => {
+    const reportParser = new ReportParser("1 3 2 4 5");
+    const [report] = reportParser.getReports();
+    assertEquals(
+      report.problemDampeneredSafe(),
+      true
+    );
+  });
+
+  Deno.test("fifth report is problem damperned safe", () => {
+    const reportParser = new ReportParser("8 6 4 4 1");
+    const [report] = reportParser.getReports();
+    assertEquals(
+      report.problemDampeneredSafe(),
+      true
+    );
+  });
+
+  Deno.test("sixth report is problem damperned safe", () => {
+    const reportParser = new ReportParser("1 3 6 7 9");
+    const [report] = reportParser.getReports();
+    assertEquals(
+      report.problemDampeneredSafe(),
+      true
+    );
+  });
