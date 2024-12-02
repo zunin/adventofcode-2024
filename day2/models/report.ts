@@ -7,7 +7,25 @@ export default class Report {
     }
 
     private adjacentLevelsDifferByAtleastOneAndAtMostThree(): boolean {
-        return true;
+        return this.levels.reduce((previous, current, index, array) => {
+            const left = array[index - 1];
+            const right = array[index + 1];
+
+            if (left !== undefined) {
+                const leftDistance = Math.abs(left - current);
+                if (leftDistance < 1 || leftDistance > 3) {
+                    return false;
+                }
+            }
+
+            if (right !== undefined) {
+                const rightDistance = Math.abs(right - current);
+                if (rightDistance < 1 || rightDistance > 3) {
+                    return false;
+                }
+            }
+            return previous
+        }, true);
     }
 
     safe(): boolean {
