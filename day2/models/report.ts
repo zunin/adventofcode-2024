@@ -1,9 +1,30 @@
 import {Level} from "./level.ts";
 
 export default class Report {
+    private levelsAreSorted(): boolean {
+        return this.levels.reduce((previous, current, index, array) => {
+            const left = array[index - 1];
+            if (left >= current) {
+                return false;
+            }
+
+            return previous;
+        }, true);
+    }
+
+    private levelsAreReverseSorted(): boolean {
+        return this.levels.reduce((previous, current, index, array) => {
+            const left = array[index - 1];
+            if (left <= current) {
+                return false;
+            }
+
+            return previous;
+        }, true);
+    }
+
     private levelsAreAllIncreasingOrDecreasing(): boolean {
-        return (JSON.stringify(this.levels) === JSON.stringify(this.levels.toSorted()))
-            || (JSON.stringify(this.levels) === JSON.stringify(this.levels.toSorted().reverse()))
+        return this.levelsAreSorted() || this.levelsAreReverseSorted() 
     }
 
     private adjacentLevelsDifferByAtleastOneAndAtMostThree(): boolean {

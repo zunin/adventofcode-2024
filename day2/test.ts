@@ -72,3 +72,12 @@ Deno.test("two report are safe", () => {
   const reports = reportParser.getReports();
   assertEquals(reports.filter((x) => x.safe()).length, 2);
 });
+
+Deno.test("if reports are the same is not safe", () => {
+  const reportParser = new ReportParser("1 1 1 1 1");
+  const [report] = reportParser.getReports();
+  assertEquals(
+    report.safe(),
+    false,
+  );
+});
