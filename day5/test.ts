@@ -1,6 +1,7 @@
 import { assertEquals } from "@std/assert";
 import { PageParser } from "./PageParser.ts";
 import { PageNumberUpdate } from "./pagenumberupdate.ts";
+import { RightPageOrderMiddleNumberSummizer } from "./rightPageOrderMiddleNumberSummizer.ts";
 
 export const exampleinput = `
 47|53
@@ -58,17 +59,28 @@ Deno.test("third update is in the right order", () => {
   assertEquals(new PageNumberUpdate([75,29,13]).isCorrectOrder(pageParser.getPageOrderingRules()), true);
 });
 
-Deno.test("fourth update is in the right order", () => {
+Deno.test("fourth update is in the wrong order", () => {
   const pageParser = new PageParser(exampleinput);
   assertEquals(new PageNumberUpdate([75,97,47,61,53]).isCorrectOrder(pageParser.getPageOrderingRules()), false);
 });
 
-Deno.test("fifth update is in the right order", () => {
+Deno.test("fifth update is in the wrong order", () => {
   const pageParser = new PageParser(exampleinput);
   assertEquals(new PageNumberUpdate([61,13,29]).isCorrectOrder(pageParser.getPageOrderingRules()), false);
 });
 
-Deno.test("sixth update is in the right order", () => {
+Deno.test("sixth update is in the wrong order", () => {
   const pageParser = new PageParser(exampleinput);
   assertEquals(new PageNumberUpdate([97,13,75,29,47]).isCorrectOrder(pageParser.getPageOrderingRules()), false);
+});
+
+Deno.test("sixth update is in the wrong order", () => {
+  const pageParser = new PageParser(exampleinput);
+  assertEquals(new PageNumberUpdate([97,13,75,29,47]).isCorrectOrder(pageParser.getPageOrderingRules()), false);
+});
+
+Deno.test("sixth update is in the wrong order", () => {
+  const pageParser = new PageParser(exampleinput);
+  const rightPageOrderMiddleNumberSummizer = new RightPageOrderMiddleNumberSummizer(pageParser);
+  assertEquals(rightPageOrderMiddleNumberSummizer.sum(), 143);
 });
