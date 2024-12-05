@@ -9,6 +9,7 @@ import { RightToLeftTopToDownDiagonalXmasWordCounter } from "./counters/RightToL
 import { LeftToRightDownToUpDiagonalXmasWordCounter } from "./counters/LeftToRightDownToUpDiagonalXmasWordCounter.ts";
 import { LeftToRightUpToDownDiagonalXmasWordCounter } from "./counters/LeftToRightUpToDownDiagonalXmasWordCounter.ts";
 import { RightToLeftDownToTopDiagonalXmasWordCounter } from "./counters/RightToLeftDownToTopDiagonalXmasWordCounter.ts";
+import { CrossMasCounter } from "./counters/CrossMasCounter.ts";
 
 const exampleinput = `
 MMMSXXMASM
@@ -167,4 +168,19 @@ Deno.test("right to left down to up diagonal counts", () => {
       wordSearchParser.getCoordinates(),
     );
     assertEquals(xmasWordCounter.count(), 1);
+  });
+
+  Deno.test("can discover a cross-mas", () => {
+    const wordSearchParser = new WordSearchParser(`
+          ......
+          .M.M..
+          ..A...
+          .S.S..
+          ......
+          ......
+          `);
+    const corssmasCounter = new CrossMasCounter(
+      wordSearchParser.getCoordinates(),
+    );
+    assertEquals(corssmasCounter.count(), 1);
   });
