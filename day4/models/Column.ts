@@ -5,7 +5,13 @@ export class Column {
     return this.column[x];
   }
 
-  contains(input: string): boolean {
-    return this.column.includes(input);
+  count(input: string): number {
+    let occurances = 0;
+    for (let x= 0; x < this.column.length; x++) {
+      if(this.column.slice(x, x+input.length) === input) {
+        occurances += 1;
+      }
+    }
+    return occurances
   }
 }

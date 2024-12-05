@@ -6,9 +6,7 @@ export class DownToUpColumnXmasWordCounter implements Counter {
   count(): number {
     let occurances = 0;
     for (const row of this.coordinates.getColumns()) {
-      if (row.contains("SAMX")) {
-        occurances += 1;
-      }
+        occurances += row.count("SAMX");
     }
     return occurances;
   }
