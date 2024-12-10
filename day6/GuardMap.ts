@@ -1,10 +1,13 @@
+import { red } from "jsr:@std/internal@^1.0.5/styles";
 import { CartesianCoordinateSystem } from "./CartesianCoordinateSystem..ts";
+import { Coordinate } from "./Coordinate.ts";
 import { GuardTile } from "./Tiles/GuardTile.ts";
+import { Tile } from "./Tiles/Tile.ts";
 
 export class GuardMap {
-    guard: GuardTile | undefined;
+    guard!: GuardTile;
     getGuard(): GuardTile {
-        return this.guard!;
+        return this.guard;
     }
     constructor(private coordinateSystem: CartesianCoordinateSystem) {
 
@@ -16,15 +19,21 @@ export class GuardMap {
     }
 
     print(): string {
-        return [...this.coordinateSystem.iterXY()].reduce((stringMap, {coordinate, tile}, index) => {
-            if(coordinate.getX() === 0 && coordinate.getY() !== 0) {
-                stringMap += "\n";
+        let mapString = "";
+        for(const [y, row] of this.coordinateSystem.getMap()) {
+            for(const [x, column] of row) {
+                mapString += column.print();
             }
-            return stringMap + tile.print();
-        }, "");
+            mapString += "\n"
+        }
+        return mapString;
     }
 
     step() {
+        this.guard.step(this);
+    }
 
+    getTile(coordinate: Coordinate): Tile {
+        return this.coordinateSystem.get(coordinate);
     }
 }
