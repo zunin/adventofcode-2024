@@ -2,14 +2,18 @@ import { Coordinate } from "../Coordinate.ts";
 import { Direction } from "../Directions/Direction.ts";
 import { GuardMap } from "../GuardMap.ts";
 import { Tile } from "./Tile.ts";
-
+import { distinctBy } from "@std/collections"
+ 
 export class GuardTile implements Tile {
   pathLog: Array<Coordinate> = [];
+  hasLeftMappedArea: boolean;
+
   getDistinctPositions(): number {
-    return 0;
+    return distinctBy(this.pathLog, (coordinate) => `${coordinate.getY()},${coordinate.getX()}`).length
   }
   constructor(private coordinate: Coordinate, private direction: Direction) {
     this.pathLog.push(coordinate);
+    this.hasLeftMappedArea = false;
   }
   getPosition(): Coordinate {
     return this.coordinate;
@@ -28,14 +32,20 @@ export class GuardTile implements Tile {
     return true;
   }
 
-  step(guardMap: GuardMap) {
+  hasLeftArea(): boolean {
+    return this.hasLeftMappedArea;
+  }
 
+  step(guardMap: GuardMap) {
     const next = this.direction.getNext(this.coordinate);
     const otherTile = guardMap.getTile(next);
-
-    if (otherTile.canMoveTo()) {
+    if (otherTile === undefined) {
+        this.hasLeftMappedArea = true;
+    } else if (otherTile.canMoveTo()) {
         otherTile.moveTo(this.coordinate);
         this.moveTo(next);
+    } else {
+        this.direction = this.direction.turn();
     }
   }
 }

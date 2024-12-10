@@ -1,5 +1,5 @@
 import { red } from "jsr:@std/internal@^1.0.5/styles";
-import { CartesianCoordinateSystem } from "./CartesianCoordinateSystem..ts";
+import { CartesianCoordinateSystem } from "./CartesianCoordinateSystem.ts";
 import { Coordinate } from "./Coordinate.ts";
 import { GuardTile } from "./Tiles/GuardTile.ts";
 import { Tile } from "./Tiles/Tile.ts";
@@ -10,10 +10,12 @@ export class GuardMap {
         return this.guard;
     }
     constructor(private coordinateSystem: CartesianCoordinateSystem) {
-
-        for(const {tile} of this.coordinateSystem.iterXY()) {
-            if (tile.isGuard()) {
-                this.guard = tile as GuardTile;
+        for(const [_, row] of this.coordinateSystem.getMap()) {
+            for(const [_, tile] of row) {
+                if (tile.isGuard()) {
+                    this.guard = tile as GuardTile;
+                    return;
+                }
             }
         }
     }
@@ -33,7 +35,13 @@ export class GuardMap {
         this.guard.step(this);
     }
 
-    getTile(coordinate: Coordinate): Tile {
+    stepUntilGuardLeavesArea() {
+        while(!this.guard.hasLeftArea()) {
+            this.guard.step(this);
+        }
+    }
+
+    getTile(coordinate: Coordinate): Tile | undefined {
         return this.coordinateSystem.get(coordinate);
     }
 }

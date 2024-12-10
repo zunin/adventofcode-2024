@@ -1,4 +1,4 @@
-import { CartesianCoordinateSystem } from "./CartesianCoordinateSystem..ts";
+import { CartesianCoordinateSystem } from "./CartesianCoordinateSystem.ts";
 import { Coordinate } from "./Coordinate.ts";
 import { DownDirection } from "./Directions/DownDirection.ts";
 import { RightDirection } from "./Directions/RightDirection.ts";

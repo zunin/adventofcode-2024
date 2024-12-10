@@ -20,7 +20,7 @@ Deno.test("map can reproduce input", () => {
   assertEquals(map.print().trim(), exampleInput.trim());
 });
 
-const stepTwoInput = `
+const stepSixInput = `
 ....#.....
 ....^....#
 ..........
@@ -41,5 +41,26 @@ Deno.test("guard can move", () => {
   map.step();
   map.step();
   map.step();
-  assertEquals(map.print().trim(), stepTwoInput.trim());
+  assertEquals(map.print().trim(), stepSixInput.trim());
 });
+
+const stepSevenInput = `
+....#.....
+....>....#
+..........
+..#.......
+.......#..
+..........
+.#........
+........#.
+#.........
+......#...
+`;
+
+Deno.test("guard can turn", () => {
+    const mapParser = new MapParser(stepSixInput);
+    const map = mapParser.getMap();
+    map.step();
+    assertEquals(map.print().trim(), stepSevenInput.trim());
+  });
+  
